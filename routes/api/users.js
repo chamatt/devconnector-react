@@ -25,7 +25,7 @@ router.get("/test", (req, res) =>
 // @desc   Tests users route
 // @access Public
 router.post("/register", (req, res) => {
-  const { errors, isValid } = validateLoginInput(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -57,8 +57,14 @@ router.post("/register", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(hash));
+            .then(user =>
+              res.json({
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar
+              })
+            )
+            .catch(err => console.log(err));
         });
       });
     }
